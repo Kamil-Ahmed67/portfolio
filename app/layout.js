@@ -1,11 +1,15 @@
-import { Inter } from 'next/font/google'
-import './globals.css'
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ 
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: 'Kamil Ahmed | Software Engineer',
@@ -14,17 +18,17 @@ export const metadata = {
   authors: [{ name: 'Kamil Ahmed' }],
   openGraph: {
     title: 'Kamil Ahmed | Software Engineer',
-    description: 'Building scalable web applications with modern technologies',
+    description: 'Building cutting-edge software & web applications with modern technologies',
     type: 'website',
   },
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.variable} font-sans`}>
+    <html lang="en"  className="dark">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
-  )
+  );
 }
