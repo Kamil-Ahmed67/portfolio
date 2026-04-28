@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# <img src="./src/assets/images/logo.png" alt="Cricket-logo" width="30" height="30"/> Dream-11
+## Project Live Link: https://lewd-operation.surge.sh/  
+## Project Description:  
+The Dream-11 React project is a fantasy sports app that lets users choose players from real life to build and manage their virtual teams. This React-built application shows available players, retrieves player information from a local JSON file, and lets users add or remove players from the team of their choice. A virtual "coin" system is also included, in which users can spend coins to choose players and get free coins to increase their balance. The app incorporates notifications using react-toastify to give feedback on user actions, such as adding players or handling insufficient coins, and uses React hooks to manage state and conditional rendering. For a responsive and seamless user experience, the user interface has multiple sections and a sticky navbar.
+## Technologies used:  
+A range of contemporary web technologies are used in this Dream-11 React project to produce a smooth, engaging user experience. The technologies utilized are broken down as follows:
+### React:
+The application's core JavaScript library, which enables effective component-based user interface development.
+### JavaScript (ES6):
+The ES6 syntax improves readability and code efficiency with features like spread operators, arrow functions, destructuring, and template literals.
+### React Hooks:
+#### useState:
+Controls the status of selected players, coins, and user interface toggles.
+#### UseEffect:
+Manages side effects and data retrieval, including loading player data from a JSON file.A range of contemporary web technologies are used in this Dream-11 React project to produce a smooth, engaging user experience. 
+Currently, two official plugins are available:
+### JSON:
+A structured format used by the app to store and transfer player data that is dynamically retrieved and displayed.
+### CSS Modules and Tailwind CSS:
+Enables a visually appealing design with little custom styling and effective layout management by providing modular, reusable, and responsive styling.
+### React Toastify:
+Provides users with feedback on actions such as successfully adding players or resolving errors caused by a lack of coins.
+### Conditional rendering:
+Allows components to be displayed dynamically, such as displaying the players that are available or the players that the user has chosen.
+### PropTypes:
+Assures that props are type-checked, improving code reliability by confirming that component properties have the appropriate types.React Toastify: Provides users with feedback on actions such as successfully adding players or resolving errors caused by a lack of coins.
+## Key Features:
+### 1.Player Selection & Coin Management:
+Users can select players within a set coin budget, adding realism to the team-building process. A notification system provides feedback on successful or failed additions due to budget or roster limits.
+### 2.Dynamic Player & Team Toggle:
+A toggle allows users to view all available players or their selected team lineup, making it easy to switch between selecting new players and reviewing their chosen roster.
+### 3.Responsive & Interactive UI:
+The interface is designed to be responsive across devices, with smooth, interactive transitions like hover effects, button animations, and toast notifications for an engaging user experience.
