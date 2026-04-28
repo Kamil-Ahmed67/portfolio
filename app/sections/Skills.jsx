@@ -3,6 +3,13 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
+import { 
+  FaReact, FaNodeJs, FaPython, FaJava, FaGitAlt, FaLinux,
+  FaHtml5, FaCss3Alt, FaJs, FaFigma, FaDatabase, FaServer,
+  FaCode, FaMicrosoft
+} from 'react-icons/fa'
+import { SiDotnet, SiFirebase, SiMysql, SiNextdotjs, SiPostman, SiTailwindcss, SiTypescript, SiVercel } from 'react-icons/si'
+
 
 const skillCategories = [
   {
@@ -46,15 +53,35 @@ const skillCategories = [
 ]
 
 const techStack = [
-  'React', 'Next.js','ASP .NET', 'TypeScript', 'Node.js','Microsoft SQL',
-  'PostgreSQL', 'Tailwind CSS', 'Git','Python',
-  'JavaScript', 'HTML5', 'CSS3', 'Firebase',
-  'Vercel', 'Linux', 'Figma', 'Postman',
+  { name: 'React', icon: <FaReact className="w-4 h-4" /> },
+  { name: 'Next.js', icon: <SiNextdotjs className="w-4 h-4" /> },
+  { name: 'ASP .NET', icon: <SiDotnet className="w-4 h-4" /> },
+  { name: 'TypeScript', icon: <SiTypescript className="w-4 h-4" /> },
+  { name: 'Node.js', icon: <FaNodeJs className="w-4 h-4" /> },
+  { name: 'Microsoft SQL', icon: <FaDatabase className="w-4 h-4" /> },
+  { name: 'MySQL', icon: <SiMysql className="w-4 h-4" /> },
+  { name: 'Tailwind CSS', icon: <SiTailwindcss className="w-4 h-4" /> },
+  { name: 'Git', icon: <FaGitAlt className="w-4 h-4" /> },
+  { name: 'Python', icon: <FaPython className="w-4 h-4" /> },
+  { name: 'JavaScript', icon: <FaJs className="w-4 h-4" /> },
+  { name: 'HTML5', icon: <FaHtml5 className="w-4 h-4" /> },
+  { name: 'CSS3', icon: <FaCss3Alt className="w-4 h-4" /> },
+  { name: 'Firebase', icon: <SiFirebase className="w-4 h-4" /> },
+  { name: 'Vercel', icon: <SiVercel className="w-4 h-4" /> },
+  { name: 'Linux', icon: <FaLinux className="w-4 h-4" /> },
+  { name: 'Figma', icon: <FaFigma className="w-4 h-4" /> },
+  { name: 'Postman', icon: <SiPostman className="w-4 h-4" /> },
 ]
 
 export default function Skills() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
   const [activeCategory, setActiveCategory] = useState(0)
+  const [progressKey, setProgressKey] = useState(0)
+
+  const handleCategoryChange = (index) => {
+    setActiveCategory(index)
+    setProgressKey(prev => prev + 1)
+  }
 
   return (
     <section id="skills" className="relative py-24 lg:py-32 bg-dark-900/50">
@@ -87,7 +114,7 @@ export default function Skills() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + index * 0.1 }}
-              onClick={() => setActiveCategory(index)}
+              onClick={() => handleCategoryChange(index)}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
                 activeCategory === index
                   ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/30'
@@ -101,7 +128,7 @@ export default function Skills() {
 
         {/* Skills Grid */}
         <motion.div
-          key={activeCategory}
+          key={`${activeCategory}-${progressKey}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
@@ -109,7 +136,7 @@ export default function Skills() {
         >
           {skillCategories[activeCategory].skills.map((skill, index) => (
             <motion.div
-              key={skill.name}
+              key={`${activeCategory}-${skill.name}`}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -121,10 +148,11 @@ export default function Skills() {
               </div>
               <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                 <motion.div
+                  key={`bar-${activeCategory}-${index}-${progressKey}`}
                   initial={{ width: 0 }}
                   animate={{ width: `${skill.level}%` }}
                   transition={{ duration: 1, delay: 0.3 + index * 0.1, ease: 'easeOut' }}
-                  className="h-full rounded-full bg-linear-to-r from-primary-500 to-accent-500"
+                  className="h-full rounded-full bg-linear-to-r from-gray-700 to-gray-700"
                 />
               </div>
             </motion.div>
@@ -142,14 +170,15 @@ export default function Skills() {
           <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
             {techStack.map((tech, index) => (
               <motion.span
-                key={tech}
+                key={tech.name}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.8 + index * 0.05 }}
                 whileHover={{ scale: 1.1, y: -2 }}
-                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:bg-primary-500/20 hover:border-primary-500/30 hover:text-primary-400 transition-all duration-300 cursor-default"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:bg-primary-500/20 hover:border-primary-500/30 hover:text-primary-400 transition-all duration-300 cursor-default"
               >
-                {tech}
+                {tech.icon}
+                {tech.name}
               </motion.span>
             ))}
           </div>

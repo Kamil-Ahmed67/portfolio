@@ -117,7 +117,7 @@ export default function Hero() {
               </motion.a>
               
               <motion.a
-                href="/resume.pdf"
+                href="/documents/resume.pdf"
                 target="_blank"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300"
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -151,9 +151,9 @@ export default function Hero() {
               
               {/* Profile Image Container */}
               <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl shadow-primary-500/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-accent-500/20 z-10" />
+                <div className="absolute inset-0 bg-linear-to-br from-primary-500/20 to-accent-500/20 z-10" />
                 <Image
-                  src="/images/profile.jpg"
+                  src="/images/Kamil.jpg"
                   alt="Kamil Ahmed"
                   fill
                   className="object-cover"

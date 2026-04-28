@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { X, GraduationCap, Trophy, Camera, Calendar, MapPin, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 
@@ -11,11 +11,11 @@ const albums = [
     id: 'graduation',
     title: 'Graduation Day',
     icon: GraduationCap,
-    description: 'Celebrating the completion of my B.Sc. in CSE from AIUB',
+    description: 'Celebrating 23rd Convocation-AIUB',
     color: 'from-primary-500 to-primary-700',
     photos: [
       {
-        src: '/images/graduation/grad1.jpg',
+        src: '/images/graduation/grad5.jpg',
         caption: 'Receiving my degree certificate',
         date: 'January 2024',
         location: 'AIUB Campus, Dhaka',
@@ -33,7 +33,13 @@ const albums = [
         location: 'AIUB Campus',
       },
       {
-        src: '/images/graduation/grad4.jpg',
+        src: '/images/graduation/grad4.JPG',
+        caption: 'Family celebration',
+        date: 'January 2024',
+        location: 'Dhaka',
+      },
+      {
+        src: '/images/graduation/grad-6.WEBP',
         caption: 'Family celebration',
         date: 'January 2024',
         location: 'Dhaka',
@@ -118,7 +124,7 @@ export default function PhotoAlbums() {
     setSelectedAlbum(album)
     setPhotoIndex(index)
     setSelectedPhoto(album.photos[index])
-   // document.body.style.overflow = 'hidden'
+    // document.body.style.overflow = 'hidden'
   }
 
   const closeLightbox = () => {
@@ -127,18 +133,34 @@ export default function PhotoAlbums() {
     document.body.style.overflow = 'unset'
   }
 
-  const nextPhoto = () => {
+  const nextPhoto = useCallback(() => {
+    if (!selectedAlbum) return
+
     const newIndex = (photoIndex + 1) % selectedAlbum.photos.length
     setPhotoIndex(newIndex)
     setSelectedPhoto(selectedAlbum.photos[newIndex])
-  }
+  }, [photoIndex, selectedAlbum])
 
-  const prevPhoto = () => {
-    const newIndex = (photoIndex - 1 + selectedAlbum.photos.length) % selectedAlbum.photos.length
+  const prevPhoto = useCallback(() => {
+    if (!selectedAlbum) return
+
+    const newIndex =
+      (photoIndex - 1 + selectedAlbum.photos.length) %
+      selectedAlbum.photos.length
+
     setPhotoIndex(newIndex)
     setSelectedPhoto(selectedAlbum.photos[newIndex])
-  }
-
+  }, [photoIndex, selectedAlbum])
+  useEffect(() => {
+    if (!selectedPhoto) return
+    const handler = (e) => {
+      if (e.key === 'ArrowRight') nextPhoto()
+      if (e.key === 'ArrowLeft') prevPhoto()
+      if (e.key === 'Escape') closeLightbox()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [selectedPhoto, photoIndex, nextPhoto, prevPhoto])
   return (
     <section id="gallery" className="relative py-24 lg:py-32 bg-dark-900/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -173,19 +195,19 @@ export default function PhotoAlbums() {
             >
               <div className="relative rounded-2xl overflow-hidden bg-dark-900 border border-white/5 hover:border-white/20 transition-all duration-500">
                 {/* Album Cover */}
-                <div className={`relative h-64 bg-gradient-to-br ${album.color} p-8 flex flex-col items-center justify-center`}>
+                <div className={`relative h-64 bg-linear-to-br ${album.color} p-8 flex flex-col items-center justify-center`}>
                   <album.icon className="w-16 h-16 text-white/80 mb-4 group-hover:scale-110 transition-transform duration-300" />
                   <h3 className="text-2xl font-bold text-white text-center">{album.title}</h3>
                   <p className="text-white/70 text-sm text-center mt-2">{album.photos.length} Photos</p>
-                  
+
                   {/* Hover Effect */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white font-medium rounded-xl">
+                    <span className="px-4 py-3 bg-white/20 backdrop-blur-sm text-white font-medium rounded-xl">
                       View Album
                     </span>
                   </div>
                 </div>
-                
+
                 {/* Album Info */}
                 <div className="p-6">
                   <p className="text-gray-400 text-sm">{album.description}</p>
@@ -238,8 +260,13 @@ export default function PhotoAlbums() {
                         className="relative aspect-square rounded-xl overflow-hidden bg-dark-800 cursor-pointer group"
                         onClick={() => openLightbox(selectedAlbum, index)}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/20 to-accent-900/20 flex items-center justify-center">
-                          <Camera className="w-12 h-12 text-white/20" />
+                        <div className="absolute inset-0 bg-linear-to-br from-primary-900/20 to-accent-900/20 flex items-center justify-center">
+                          <Image
+                            src={photo.src}
+                            alt={photo.caption}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
                         </div>
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                           <p className="text-white text-sm font-medium">{photo.caption}</p>
@@ -254,42 +281,52 @@ export default function PhotoAlbums() {
         </AnimatePresence>
 
         {/* Lightbox */}
+        {/* Lightbox */}
         <AnimatePresence>
           {selectedPhoto && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+              className="fixed inset-0 z-60 flex items-center justify-center bg-black/95 backdrop-blur-sm"
               onClick={closeLightbox}
             >
               <button
                 onClick={(e) => { e.stopPropagation(); prevPhoto() }}
-                className="absolute left-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+                className="absolute left-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
-              
+
               <button
                 onClick={(e) => { e.stopPropagation(); nextPhoto() }}
-                className="absolute right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+                className="absolute right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
 
               <motion.div
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.9 }}
-                className="relative max-w-4xl max-h-[80vh] mx-16"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+                className="relative mx-16 max-w-4xl w-full"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative aspect-video bg-dark-800 rounded-2xl overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-900/30 to-accent-900/30 flex items-center justify-center">
-                    <Camera className="w-24 h-24 text-white/10" />
-                  </div>
+                {/* Image container — uses natural aspect, capped height */}
+                <div className="relative w-full max-h-[75vh] rounded-2xl overflow-hidden bg-dark-800 flex items-center justify-center">
+                  <Image
+                    key={selectedPhoto.src}
+                    src={selectedPhoto.src}
+                    alt={selectedPhoto.caption}
+                    width={1200}
+                    height={800}
+                    className="object-contain max-h-[75vh] w-auto rounded-2xl"
+                    priority
+                  />
                 </div>
-                
+
+                {/* Caption */}
                 <div className="mt-4 text-center">
                   <h4 className="text-xl font-semibold text-white mb-2">{selectedPhoto.caption}</h4>
                   <div className="flex items-center justify-center gap-6 text-gray-400 text-sm">
@@ -302,6 +339,10 @@ export default function PhotoAlbums() {
                       {selectedPhoto.location}
                     </span>
                   </div>
+                  {/* Photo counter */}
+                  <p className="text-gray-600 text-xs mt-2">
+                    {photoIndex + 1} / {selectedAlbum.photos.length}
+                  </p>
                 </div>
               </motion.div>
 
